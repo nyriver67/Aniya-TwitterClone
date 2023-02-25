@@ -1,10 +1,15 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 <section class="content">
+  <div class="nav_head">
+    <img class="app_icon" src="{% static 'img/social-media.png' %}"/>
+    <h1 class="home">HOME </h1>
+  </div>
   <section class="post_form">
-      <form action="/" method="POST">
+      <form action="/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Name" required />
         <textarea name="body" placeholder="Tell us anything" required></textarea>
+        <input class="form-control form-control-sm"  name='image' type='file'/>
         <input type="submit" value="Post" />
       </form>
    </section>
@@ -17,8 +22,10 @@
         <li>
           <img class="menu_icon js-menu-icon" src="{% static 'img/menu_z.png' %}" />
           <div class="menu">
-            <a href="/delete/{{ post.id }}/">&#x1f5d1</a>
+            <a href="/delete/{{ post.id }}/">Delete</a> <br>
+            <a href="/edit/{{post.id}}">Edit</a>           
           </div>
+          
           <div class="logo">
             <img src="{% static 'img/profile.png' %}" />
           </div>
@@ -26,7 +33,20 @@
           <div class="name">{{ post.name }}</div>
           <div class="datetime">{{ post.created_at }}</div>
           <p>{{ post.body }}</p>
+          {% if post.image.url %}
+          <img class="post-border" src="{{ post.image.url }}">
+
+          {% endif %}
+           <div class="like_button">
+            <a href="/like/{{post.id}}"><img src="{% static 'img/heart.png' %}" alt=""></a>
+          <p class="like_count">
+           {{post.likes}}
+           </p>
           </div>
+            </div>
+          </div>
+
+         
         </li>
        {% endfor %}
       </ul>

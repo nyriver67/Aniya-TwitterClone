@@ -9,11 +9,15 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = '*'
 CORS_ORIGIN_ALLOW_ALL = True
-CSRF_TRUSTED_ORGINS = ['http://127.0.0.1:8000/']
+CSRF_TRUSTED_ORGINS = ['http://127.0.0.1:8000/', 'https://aniya-twitterclone.aniyarivera.repl.co/']
 
 
 # Application definition
@@ -41,8 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'post',
-    'corsheaders',
-    'cloudinary',
+    'cloudinary',    
 ]
 
 MIDDLEWARE = [
@@ -121,11 +124,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_TMP = os.path.join(BASE_DIR,'static')
+STATIC_URL = '/static/'
+os.makedirs(STATIC_TMP, exist_ok=True)
+os.makedirs(STATIC_ROOT, exist_ok=True)
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+  os.path.join(BASE_DIR, 'static')
 ]
+cloudinary.config(
+    cloud_name='do37viav8',
+    api_key='244848832523725',
+    api_secret='Lam0fLCMtsCjvMYuOI9q4dg9eN0'
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
